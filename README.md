@@ -2,9 +2,15 @@
 Bootstrap a server with minimum requirements.
 
 Steps:
+```bash
 wget https://github.com/AndyBarkley/bootstrap-mimimal/main/bootstrap.sh
-chmod +x bootstrap.sh
+```
+```bash
+sudo chmod +x bootstrap.sh
+```
+``` bash
 sudo ./bootstrap.sh
+```
 
 Your bootstrap.sh will:
 
