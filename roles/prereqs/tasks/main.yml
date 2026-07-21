@@ -1,0 +1,5 @@
+---
+- name: Install Updates (Ubuntu/Debian)
+  ansible.builtin.apt:
+    upgrade: dist
+    update_cache: true

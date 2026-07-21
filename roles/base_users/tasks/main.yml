@@ -1,0 +1,53 @@
+---
+- name: Delete ubuntu account and home directory
+  ansible.builtin.user:
+    name: ubuntu
+    state: absent
+    remove: true
+  when: "'ubuntu' in ansible_facts.get('user_ids', {})"
+
+- name: Delete ubuntu group
+  ansible.builtin.group:
+    name: ubuntu
+    state: absent
+  when: "'ubuntu' in ansible_facts.get('group_ids', {})"
+
+- name: Add ansible group
+  ansible.builtin.group:
+    name: ansible
+    state: present
+
+- name: Create ansible user
+  ansible.builtin.user:
+    name: ansible
+    groups: sudo,ansible
+    shell: /bin/bash
+    state: present
+
+- name: Add SSH key for ansible
+  ansible.posix.authorized_key:
+    user: ansible
+    key: "{{ lookup('file', 'files/ansible_authorized_keys') }}"
+
+- name: Add sudoers file for ansible
+  ansible.builtin.copy:
+    content: "ansible ALL=(ALL) NOPASSWD:ALL\n"
+    dest: /etc/sudoers.d/ansible
+    mode: '0440'
+
+- name: Add andybob group
+  ansible.builtin.group:
+    name: andybob
+    state: present
+
+- name: Create andybob user
+  ansible.builtin.user:
+    name: andybob
+    groups: sudo,ansible
+    shell: /bin/bash
+    state: present
+
+- name: Add SSH key for andybob
+  ansible.posix.authorized_key:
+    user: andybob
+    key: "{{ lookup('file', 'files/andybob_authorized_keys') }}"
